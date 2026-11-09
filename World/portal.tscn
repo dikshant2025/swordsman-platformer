@@ -1,0 +1,129 @@
+[gd_scene load_steps=13 format=3 uid="uid://g74v5wvcc6v3"]
+
+[ext_resource type="Texture2D" uid="uid://djutfp8dcftkv" path="res://World/Purple Portal Sprite Sheet.png" id="2_grrij"]
+
+[sub_resource type="GDScript" id="GDScript_qy3wg"]
+script/source = "# res://portal.gd
+extends Area2D
+
+@export_file(\"*.tscn\") var target_scene_path: String = \"\"   # e.g. \"res://level2.tscn\"
+@export var target_spawn_tag: String = \"start\"              # tag to spawn at in the next scene
+@export var require_button: bool = false                    # set true if you want \"press to use\"
+@export var input_action: String = \"interact_grab\"          # or \"ui_accept\"
+
+var _player_inside := false
+
+func _ready() -> void:
+	monitoring = true
+	monitorable = true
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
+	if not body_exited.is_connected(_on_body_exited):
+		body_exited.connect(_on_body_exited)
+
+func _process(_delta: float) -> void:
+	if require_button and _player_inside and Input.is_action_just_pressed(input_action):
+		_teleport()
+
+func _on_body_entered(body: Node) -> void:
+	if body.is_in_group(\"Player\"):
+		_player_inside = true
+		if not require_button:
+			_teleport()
+
+func _on_body_exited(body: Node) -> void:
+	if body.is_in_group(\"Player\"):
+		_player_inside = false
+
+func _teleport() -> void:
+	if target_scene_path == \"\":
+		push_warning(\"Portal: target_scene_path is empty.\")
+		return
+	# hand off the desired spawn tag to the next scene
+	get_tree().set_meta(\"spawn_tag\", target_spawn_tag)
+	get_tree().change_scene_to_file(target_scene_path)
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6r214"]
+atlas = ExtResource("2_grrij")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pgh4"]
+atlas = ExtResource("2_grrij")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtc1a"]
+atlas = ExtResource("2_grrij")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8rct"]
+atlas = ExtResource("2_grrij")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8kna"]
+atlas = ExtResource("2_grrij")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a7dg"]
+atlas = ExtResource("2_grrij")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jl8kn"]
+atlas = ExtResource("2_grrij")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3x30s"]
+atlas = ExtResource("2_grrij")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_byaht"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_6r214")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2pgh4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtc1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8rct")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8kna")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a7dg")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_jl8kn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3x30s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dd4p5"]
+radius = 8.0
+height = 42.0
+
+[node name="Portal" type="Area2D" groups=["portal"]]
+collision_layer = 8
+script = SubResource("GDScript_qy3wg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_byaht")
+autoplay = "default"
+frame_progress = 0.881305
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("CapsuleShape2D_dd4p5")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1j17p3ywcebx"]
+
+[ext_resource type="Script" uid="uid://by8vt8x4jyt1e" path="res://Cryatal/crystal_tier.gd" id="1_71npn"]
+[ext_resource type="Texture2D" uid="uid://c5tvs5i4dc03a" path="res://Cryatal/Icon33.png" id="2_qkonw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ywa7y"]
+
+[node name="CrystalTier2" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_71npn")
+tier = 2
+heal_amount = 40
+melee_bonus = 15
+ranged_bonus = 8
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_qkonw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ywa7y")

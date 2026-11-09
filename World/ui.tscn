@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dflxqwm7p6aw6"]
+
+[ext_resource type="Script" uid="uid://coww3v1c7wcur" path="res://World/ui.gd" id="1_m6e0p"]
+[ext_resource type="PackedScene" uid="uid://q4lucx8blqsk" path="res://Boss/healthbar.tscn" id="2_27fn8"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_m6e0p")
+
+[node name="PlayerBar" parent="." instance=ExtResource("2_27fn8")]
+offset_left = 277.0
+offset_top = 159.0
+offset_right = 517.0
+offset_bottom = 163.0
+
+[node name="BossBar" parent="." instance=ExtResource("2_27fn8")]
+offset_left = 746.0
+offset_top = 161.0
+offset_right = 986.0
+offset_bottom = 165.0
