@@ -5,10 +5,10 @@ A 2D action platformer built in **Godot 4.4** with **GDScript**. Fight slimes, c
 Built as a team project for a game development course at Jacksonville State University. **I wrote the game's code (GDScript).**
 
 ## Features
-- **Player combat:** melee sword attacks and ranged projectiles, built on a shared `weapon.gd` base class
+- **Player combat:** melee sword attacks through a hitbox and ranged projectiles, each on its own cooldown timer
 - **Three slime enemy types** with their own behavior
 - **Orc boss AI:** random roaming, chases the player within range, attack wind-up timed to the animation, hit stagger, health bar
-- **Crystal upgrade tiers** that raise the player's stats
+- **Crystal upgrade tiers** that heal the player and permanently raise melee and ranged damage
 - **Saved state between levels:** the `GameState` autoload keeps health, damage and crystals when you go through a portal
 - Spawn points, portals, UI, sound effects, and levels built from Tiled maps
 
